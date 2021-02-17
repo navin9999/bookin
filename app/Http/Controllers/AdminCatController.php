@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Models\category;
 
 class AdminCatController extends Controller
 {
@@ -17,11 +19,50 @@ class AdminCatController extends Controller
     }
 
     public function admin_cat_list() {
-        return view('admin.cat_list');
+        $data = category::all();
+        return view('admin.cat_list', ['categories'=>$data ]);
     }
 
+    public function create_category(Request $req)
+    {
+        $validated = $req->validate([
+            'name' => 'required|min:3|unique:categories',
+            'status' => 'required',
+        ]);
+
+        $cat=new category;
+
+
+        if($req->parent_id==null){
+         $cat->parent_id=0;
+
+        }
+        else {
+            $cat->parent_id=$req->parent_id;
+        }
+        $cat->name=$req->name;
+        $cat->description=$req->description;
+        $cat['slug'] = str_replace(' ', '-', $cat['name']);
+        $cat->cover=$req->file('cover')->store('public');
+        $cat->status=$req->status;
+
+       // $req->validate([
+       //      'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+       //  ]);
+    
+       //  $imageName = time().'.'.$req->image->extension();  
+     
+       //  $req->image->move(public_path('images'), $imageName);
+       //  $cat->image=$imageName;
+        $cat->save();
+         return back()->with('message','You have successfully Add Category.'); 
+       
+    }
+
+
     public function admin_cat_add() {
-        return view('admin.cat_add');
+        $data = category::all();
+        return view('admin.cat_add', ['categories'=>$data ]);
     }
 
     public function admin_cat_edit() {
