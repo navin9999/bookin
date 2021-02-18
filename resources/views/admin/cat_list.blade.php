@@ -66,7 +66,7 @@
                                        <td> <?php echo "$category->description"; ?>   </td>
                                        
                                        <td>
-                                          <img  src="{{url('/storage/logo.png')}}"  />
+                                         <img src="images/cat_img/{{$category->cover}}" alt="" width="50px">
 
                                           <!-- <img src="store/app/{{ $category->cover }}" width="50" height="50"> -->
                                        </td>
@@ -79,7 +79,7 @@
                                        <button class="btn btn-danger btn-sm" >Deactive</button>
                                        @endif
                                       </td>
-                                       <td><a href="/admin_cat_edit/{{$category->id}}" class="btn btn-warning btn-sm ">Edit</a>
+                                       <td><a target="_blank" href="{{'edit/'.$category->id}}" class="btn btn-warning btn-sm ">Edit</a>
                                           <a href="{{'delete/'.$category->id}}" class="btn btn-sm btn-danger">Delete</a>
                                        </td>
                                     </tr>

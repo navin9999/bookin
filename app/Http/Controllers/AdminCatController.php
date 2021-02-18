@@ -43,17 +43,17 @@ class AdminCatController extends Controller
         $cat->name=$req->name;
         $cat->description=$req->description;
         $cat['slug'] = str_replace(' ', '-', $cat['name']);
-        $cat->cover=$req->file('cover')->store('public');
+        // $cat->cover=$req->file('cover')->store('cat_img');
         $cat->status=$req->status;
 
-       // $req->validate([
-       //      'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-       //  ]);
+       $req->validate([
+            'cover' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
     
-       //  $imageName = time().'.'.$req->image->extension();  
+        $imageName = time().'.'.$req->cover->extension();  
      
-       //  $req->image->move(public_path('images'), $imageName);
-       //  $cat->image=$imageName;
+        $req->cover->move(public_path('images/cat_img'), $imageName);
+        $cat->cover=$imageName;
         $cat->save();
          return back()->with('message','You have successfully Add Category.'); 
        
@@ -65,10 +65,49 @@ class AdminCatController extends Controller
         return view('admin.cat_add', ['categories'=>$data ]);
     }
 
-    public function admin_cat_edit() {
-        return view('admin.cat_edit');
-    }
+    // public function admin_cat_edit($id) {
+    //     $data = category::find($id);
+    //     print_r($data) ;
+    // }
+  public function show_edit($id) {
 
+    $data = category::find($id);
+    return view('admin.cat_edit', ['data'=>$data]);
+ }
+public function edit_category(Request $req)
+    {
+        $validated = $req->validate([
+            'name' => 'required|min:3|unique:categories',
+            'status' => 'required',
+        ]);
+
+        $cat=new category;
+
+
+        if($req->parent_id==null){
+         $cat->parent_id=0;
+
+        }
+        else {
+            $cat->parent_id=$req->parent_id;
+        }
+        $cat->name=$req->name;
+        $cat->description=$req->description;
+        $cat['slug'] = str_replace(' ', '-', $cat['name']);
+        $cat->status=$req->status;
+
+       $req->validate([
+            'cover' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+    
+        $imageName = time().'.'.$req->cover->extension();  
+     
+        $req->cover->move(public_path('images/cat_img'), $imageName);
+        $cat->cover=$imageName;
+        $cat->save();
+         return back()->with('message','You have successfully Update Category.'); 
+       
+    }
 
     public function admin_sub_cat_list() {
             return view('admin.sub_cat_list');
