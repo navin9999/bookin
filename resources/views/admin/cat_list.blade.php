@@ -26,6 +26,15 @@
             <div class="row">
                <div class="col-12">
                   <div class="card">
+
+                  @if(session()->has('message'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>{{ session()->get('message') }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
                      <div class="card-header">
                         <h4 class="card-title">Category List</h4>
                         <a href="/admin_cat_add" class="float-right btn btn-primary btn-xs"> + Add New Cat</a>
@@ -80,7 +89,7 @@
                                        @endif
                                       </td>
                                        <td><a target="_blank" href="{{'edit/'.$category->id}}" class="btn btn-warning btn-sm ">Edit</a>
-                                          <a href="{{'delete/'.$category->id}}" class="btn btn-sm btn-danger">Delete</a>
+                                          <a href="{{'cat_delete/'.$category->id}}" class="btn btn-sm btn-danger">Delete</a>
                                        </td>
                                     </tr>
                                     @endforeach  

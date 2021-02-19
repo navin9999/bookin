@@ -31,9 +31,7 @@ class AdminCatController extends Controller
         ]);
 
         $cat=new category;
-
-
-        if($req->parent_id==null){
+       if($req->parent_id==null){
          $cat->parent_id=0;
 
         }
@@ -64,26 +62,19 @@ class AdminCatController extends Controller
         $data = category::all();
         return view('admin.cat_add', ['categories'=>$data ]);
     }
-
-    // public function admin_cat_edit($id) {
-    //     $data = category::find($id);
-    //     print_r($data) ;
-    // }
   public function show_edit($id) {
 
     $data = category::find($id);
     return view('admin.cat_edit', ['data'=>$data]);
  }
-public function edit_category(Request $req)
-    {
-        $validated = $req->validate([
+    public function edit_category(Request $req)
+        {
+            $validated = $req->validate([
             'name' => 'required|min:3|unique:categories',
             'status' => 'required',
         ]);
 
-        $cat=new category;
-
-
+        $cat=category::find($req->id);
         if($req->parent_id==null){
          $cat->parent_id=0;
 
@@ -108,6 +99,13 @@ public function edit_category(Request $req)
          return back()->with('message','You have successfully Update Category.'); 
        
     }
+
+    public function cat_delete($id) {
+    	$data=category::find($id);
+    	$data->delete();
+    	return back()->with('message','User has been Deleted successfully');;
+    }
+
 
     public function admin_sub_cat_list() {
             return view('admin.sub_cat_list');

@@ -23,6 +23,7 @@ use App\Http\Controllers\AdminPostController;
 Route::get('/admin_cat_list', [AdminCatController::class, 'admin_cat_list']);
 Route::get('/admin_cat_add', [AdminCatController::class, 'admin_cat_add']);
 Route::get('/edit/{id}', [AdminCatController::class, 'show_edit']);
+Route::get('/cat_delete/{id}', [AdminCatController::class, 'cat_delete']);
 Route::POST('/edit_cat', [AdminCatController::class, 'edit_category']);
 // Route::get('/admin_cat_edit/{$id}', [AdminCatController::class, 'admin_cat_edit']);
 Route::post('/create_category', [AdminCatController::class, 'create_category']);
